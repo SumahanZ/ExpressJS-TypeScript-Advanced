@@ -5,8 +5,12 @@ import { createUserInputSchema } from "../schemas/user_schema";
 
 const router = Router();
 
-router.post("/users", validateSchema(createUserInputSchema), createUserHandler);
+router.post(
+  "/api/users",
+  validateSchema(createUserInputSchema),
+  createUserHandler
+);
 
+//
 router.use("/api", router);
-
 export default router;

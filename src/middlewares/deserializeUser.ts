@@ -8,7 +8,7 @@ export const deserializeUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  //get accessToken from the request headers
+  //check and get if accesstoken exist in req.header
   //import get function from lodash to make it safer accessing a property if it exist or not
   //at the start of an authorization token, we gonna have the word Bearer, it gets access to the system, but we wanna remove that word
   const accessToken = get(req, "headers.authorization", "").replace(
@@ -31,10 +31,10 @@ export const deserializeUser = async (
   if (expired && refreshToken) {
     //reissue new accessToken here
     const newAccessToken = await reIssueAccessToken({ refreshToken });
-    if (newAccessToken) {
-      //set header with the new accessToken
-      res.setHeader("x-access-token", newAccessToken);
-    }
+    //set header with the new accessToken
+    if (newAccessToken) res.setHeader("x-access-token", newAccessToken);
+    //verify the new JWT
+    //returns { valid: boolean, decodedToken: { ...user, sessionID }, expired: boolean}
     const result = verifyJWT(newAccessToken as string);
     //attach to the res.locals.user with the new decoded object value from the new accesstoken
     res.locals.user = result.decodedToken;

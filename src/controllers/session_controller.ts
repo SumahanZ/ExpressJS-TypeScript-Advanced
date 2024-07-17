@@ -56,8 +56,5 @@ export async function deleteSessionHandler(req: Request, res: Response) {
   //so when the user try to use it again, they won't be able to use it again
   await updateSession({ _id: sessionId }, { valid: false });
 
-  return res.send({
-    accessToken: null,
-    refreshToken: null,
-  });
+  return res.status(200).send({ msg: "Successfully invalidate session!" });
 }

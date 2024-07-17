@@ -17,29 +17,27 @@ import {
 const router = Router();
 
 router.post(
-  "/products",
+  "/api/products",
   [requireUser, validateSchema(createProductInputSchema)],
   createProductHandler
 );
 
 router.get(
-  "/products/:productId",
-  [requireUser, validateSchema(getProductInputSchema)],
+  "/api/products/:productId",
+  validateSchema(getProductInputSchema),
   getProductHandler
 );
 
 router.put(
-  "/products/:productId",
+  "/api/products/:productId",
   [requireUser, validateSchema(updateProductInputSchema)],
   updateProductHandler
 );
 
 router.delete(
-  "/products/:productId",
+  "/api/products/:productId",
   [requireUser, validateSchema(deleteProductInputSchema)],
   deleteProductHandler
 );
-
-router.use("/api", router);
 
 export default router;

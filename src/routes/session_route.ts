@@ -11,15 +11,15 @@ import { createSessionSchema } from "../schemas/session_schema";
 const router = Router();
 
 router.post(
-  "/sessions",
+  "/api/sessions",
   validateSchema(createSessionSchema),
   createUserSessionHandler
 );
 
-router.get("/sessions", requireUser, getUserSessionsHandler);
+router.get("/api/sessions", requireUser, getUserSessionsHandler);
 
-router.delete("/sessions", requireUser, deleteSessionHandler);
+router.delete("/api/sessions", requireUser, deleteSessionHandler);
 
-router.use("/api", router);
+// router.use("/api", router);
 
 export default router;
