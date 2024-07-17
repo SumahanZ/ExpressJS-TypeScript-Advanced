@@ -1,4 +1,4 @@
-import { object, string, TypeOf, number } from "zod";
+import { z, object, string, number } from "zod";
 
 const body = object({
   title: string({
@@ -39,7 +39,7 @@ export const getProductInputSchema = object({
 });
 
 //type inference by zod
-export type CreateProductInput = TypeOf<typeof createProductInputSchema>;
-export type UpdateProductInput = TypeOf<typeof updateProductInputSchema>;
-export type DeleteProductInput = TypeOf<typeof deleteProductInputSchema>;
-export type GetProductInput = TypeOf<typeof getProductInputSchema>;
+export type CreateProductInput = z.infer<typeof createProductInputSchema>;
+export type UpdateProductInput = z.infer<typeof updateProductInputSchema>;
+export type DeleteProductInput = z.infer<typeof deleteProductInputSchema>;
+export type GetProductInput = z.infer<typeof getProductInputSchema>;

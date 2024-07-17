@@ -4,6 +4,7 @@ import * as UserService from "../services/user_service";
 import * as SessionService from "../services/session_service";
 import supertest from "supertest";
 import { createApp } from "../utils/createApp";
+import { createUserSessionHandler } from "../controllers/session_controller";
 
 const app = createApp();
 const userId = new mongoose.Types.ObjectId().toString();
@@ -103,7 +104,7 @@ describe("user", () => {
 
   describe("create user session", () => {
     describe("given the username and password are valid", () => {
-      it("should return a signed accessToken and refreshToken", () => {
+      it("should return a signed accessToken and refreshToken", async () => {
         //create this test without superTest
         jest
           .spyOn(UserService, "validatePassword")
@@ -116,11 +117,37 @@ describe("user", () => {
           .mockReturnValueOnce(sessionPayload);
 
         const req = {
+          get() {
+            return "a user agent";
+          },
           body: {
             email: "test@example.com",
             password: "Password1232",
           },
         };
+
+        const send = jest.fn();
+
+        const res = {
+          send,
+        };
+
+        //@ts-ignore
+        await createUserSessionHandler(req, res);
+
+        expect(send).toHaveBeenCalledWith({
+          accessToken: expect.any(String),
+          refreshToken: expect.any(String),
+        });
+
+        //Or you can do this instead
+        // const { statusCode, body, ...other } = await supertest(app)
+        //   .post("/api/sessions")
+        //   .send(userInput);
+
+        // expect(statusCode).toBe(200);
+        // expect(body.accessToken).not.toBeUndefined;
+        // expect(body.refreshToken).not.toBeUndefined;
       });
     });
   });

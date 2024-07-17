@@ -1,4 +1,4 @@
-import { object, string, TypeOf } from "zod";
+import { z, object, string } from "zod";
 
 //the passed in request payload must be in an object form, if it comes from body, it must be object and have properties of name which has to be a string, etc
 export const createUserInputSchema = object({
@@ -25,7 +25,7 @@ export const createUserInputSchema = object({
 //CREATE TYPE SO THE REQUEST BODY KNOW WHAT TYPE IT SHOULD EXPECT
 //Zod will give the automatic typing of the object for the body passing in
 export type CreateUserInput = Omit<
-  TypeOf<typeof createUserInputSchema>,
+  z.infer<typeof createUserInputSchema>,
   //emit body.passwordConfirmation from the Type
   "body.passwordConfirmation"
 >;
